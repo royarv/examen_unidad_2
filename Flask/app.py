@@ -54,7 +54,7 @@ la formula es la siguente:
 último octeto de la IP * 3 + longitud del nombre del dispositivo + ":" + nombre (Cambiando los espacios por _)
 
 """
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template_string, request,redirect, url_for
 
 app = Flask(__name__)
 
@@ -111,6 +111,7 @@ def test2():
             <input type="text" name="tipo" placeholder="Tipo" value="{tipo or ''}"><br>
             <input type="text" name="otros" placeholder="Otros" value="{otros or ''}"><br>
             <button type="submit">Enviar</button>
+            
         </form>
 
         <h3>Lista de Dispositivos</h3>
@@ -129,6 +130,9 @@ def test2():
                 <strong>Tipo:</strong> {entry['tipo']}<br>
                 <strong>Otros:</strong> {entry['otros']}<br>
                 <hr>
+                <form action="/test2/actualizar/{entry['id']}" method="GET">
+                    <button type="submit">Actualizar</button>
+                </form>
             </li>
         """
     
@@ -139,8 +143,58 @@ def test2():
     """
 
     return render_template_string(html)
+@app.route('/test2/actualizar/<device_id>', methods=['GET', 'POST'])
+def actualizar(device_id):
+    dispositivo = next((d for d in datos_acumulados if d['id'] == device_id), None)
+
+    if not dispositivo:
+        return redirect(url_for('test2'))
+
+    
+    if request.method == 'POST':
+        dispositivo['id'] = request.form['id']
+        dispositivo['nombre'] = request.form['nombre']
+        dispositivo['descripcion'] = request.form['descripcion']
+        dispositivo['ip'] = request.form['ip']
+        dispositivo['mac'] = request.form['mac']
+        dispositivo['ubicacion'] = request.form['ubicacion']
+        dispositivo['tipo'] = request.form['tipo']
+        dispositivo['otros'] = request.form['otros']
+
+        
+        return redirect(url_for('test2'))
+
+    html = f"""
+    <html>
+    <body>
+        <h2>Actualizar Dispositivo</h2>
+        <form method="POST">
+            <input type="text" name="id" placeholder="ID" value="{dispositivo['id']}" readonly><br>
+            <input type="text" name="nombre" placeholder="Nombre" value="{dispositivo['nombre']}"><br>
+            <input type="text" name="descripcion" placeholder="Descripcion" value="{dispositivo['descripcion']}"><br>
+            <input type="text" name="ip" placeholder="IP" value="{dispositivo['ip']}"><br>
+            <input type="text" name="mac" placeholder="MAC" value="{dispositivo['mac']}"><br>
+            <input type="text" name="ubicacion" placeholder="Ubicacion" value="{dispositivo['ubicacion']}"><br>
+            <input type="text" name="tipo" placeholder="Tipo" value="{dispositivo['tipo']}"><br>
+            <input type="text" name="otros" placeholder="Otros" value="{dispositivo['otros']}"><br>
+            <button type="submit">Actualizar Dispositivo</button>
+        </form>
+        <br>
+        <a href="/test2">Volver a la pagina principal</a>
+    </body>
+    </html>
+    """
+
+    return render_template_string(html)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
+
+
+
+
+
+
+   
 
