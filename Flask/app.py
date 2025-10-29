@@ -100,7 +100,7 @@ def test2():
     html = f"""
     <html>
     <body>
-        <h2>Agregar Dispositivos</h2>
+        <h2 style="color:blue">Agregar Dispositivos</h2>
         <form method="POST">
             <input type="text" name="id" placeholder="ID" value="{id or ''}"><br>
             <input type="text" name="nombre" placeholder="Nombre" value="{nombre or ''}"><br>
@@ -114,21 +114,21 @@ def test2():
             
         </form>
 
-        <h3>Lista de Dispositivos</h3>
+        <h3 style="color:blue">Lista de Dispositivos</h3>
         <ul>
     """
     
     for entry in datos_acumulados:
         html += f"""
             <li>
-                <strong>ID:</strong> {entry['id']}<br>
-                <strong>Nombre:</strong> {entry['nombre']}<br>
-                <strong>Descripción:</strong> {entry['descripcion']}<br>
-                <strong>IP:</strong> {entry['ip']}<br>
-                <strong>MAC:</strong> {entry['mac']}<br>
-                <strong>Ubicación:</strong> {entry['ubicacion']}<br>
-                <strong>Tipo:</strong> {entry['tipo']}<br>
-                <strong>Otros:</strong> {entry['otros']}<br>
+                <strong style="color:red">ID:</strong> {entry['id']}<br>
+                <strong style="color:red">Nombre:</strong> {entry['nombre']}<br>
+                <strong style="color:red">Descripción:</strong> {entry['descripcion']}<br>
+                <strong style="color:red">IP:</strong> {entry['ip']}<br>
+                <strong style="color:red">MAC:</strong> {entry['mac']}<br>
+                <strong style="color:red">Ubicación:</strong> {entry['ubicacion']}<br>
+                <strong style="color:red">Tipo:</strong> {entry['tipo']}<br>
+                <strong style="color:red">Otros:</strong> {entry['otros']}<br>
                 <hr>
                 <form action="/test2/actualizar/{entry['id']}" method="GET">
                     <button type="submit">Actualizar</button>
@@ -167,7 +167,7 @@ def actualizar(device_id):
     html = f"""
     <html>
     <body>
-        <h2>Actualizar Dispositivo</h2>
+        <h2 style="color:blue" >Actualizar Dispositivo</h2>
         <form method="POST">
             <input type="text" name="id" placeholder="ID" value="{dispositivo['id']}" readonly><br>
             <input type="text" name="nombre" placeholder="Nombre" value="{dispositivo['nombre']}"><br>
